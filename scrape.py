@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 
 def get_tourneys(year):
     r = requests.get( f'http://bvbinfo.com/Season.asp?AssocID=3&Year={year}')
@@ -15,12 +17,17 @@ def get_tourneys(year):
             tournaments.append(link)
     return tournaments
 
-
 #print(get_tourneys(2024))
 
 def get_results():
-    tr = requests.get('http://bvbinfo.com/Tournament.asp?ID=4342')
-    tsoup = BeautifulSoup(tr.content, 'html.parser')
+    url = 'http://bvbinfo.com/Tournament.asp?ID=4342'
+    tr = requests.get(url)
+    tsoup = BeautifulSoup(tr.content, 'html.parser',from_encoding="utf8", )
     trimsoup = tsoup.find_all('table')
-    print(trimsoup)
-get_results()
+   # print(pd.read_html(tr))
+    tbls = pd.read_html(str(tsoup))
+    tbl = tbls[3]
+    tbl = tbl.iloc[:,:7]
+    return tbl
+    
+print(get_results())
