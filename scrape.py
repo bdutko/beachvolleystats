@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
+#pd.set_option('display.max_rows', None)
+#pd.set_option('display.max_columns', None)
 
 def get_tourneys(year):
     r = requests.get( f'http://bvbinfo.com/Season.asp?AssocID=3&Year={year}')
@@ -27,7 +27,8 @@ def get_results():
    # print(pd.read_html(tr))
     tbls = pd.read_html(str(tsoup))
     tbl = tbls[3]
-    tbl = tbl.iloc[:,:7]
-    return tbl
-    
+    tourneyname = tbl.iloc[0,0]
+    tbl = tbl.iloc[1:,:7]
+    return tourneyname
+
 print(get_results())
