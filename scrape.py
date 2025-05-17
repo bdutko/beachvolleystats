@@ -29,8 +29,7 @@ def get_results():
     tbl = tbls[3]
     tourneyname = tbl.iloc[0,0]
     tbl = tbl.iloc[1:,:7]
-    tbl.columns = tbl.iloc[0]
-    tbl = tbl[2:]
+    tbl.reset_index(drop=True, inplace=True)
     return tbl
 
-print(get_results())
+print(get_results().info)
