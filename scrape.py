@@ -29,6 +29,8 @@ def get_results():
     tbl = tbls[3]
     tourneyname = tbl.iloc[0,0]
     tbl = tbl.iloc[1:,:7]
-    return tourneyname
+    tbl.columns = tbl.iloc[0]
+    tbl = tbl[2:]
+    return tbl
 
 print(get_results())
