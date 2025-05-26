@@ -18,7 +18,7 @@ def get_tourneys(year):
     return tournaments
 
 def get_results(linky):
-    url = 'http://bvbinfo.com/Tournament.asp?ID=4440'
+  #  url = 'http://bvbinfo.com/Tournament.asp?ID=4440'
     tr = requests.get( f'{linky}')
     tsoup = BeautifulSoup(tr.content, 'html.parser',from_encoding="utf8", )
     trimsoup = tsoup.find_all('table')
@@ -35,18 +35,23 @@ def get_results(linky):
         tbl[['Finish']] = tbl[['Finish']].apply(pd.to_numeric)
     if 'Points' in tbl.columns:
         tbl[['Points']] = tbl[['Points']].apply(pd.to_numeric)
-    tbl.infer_objects()
     dft = tbl.dtypes
-
     return tbl
 
-#print(get_results())
 tourneys = get_tourneys(2023)
-#hh = get_results('http://bvbinfo.com/Tournament.asp?ID=4440')
-x = 1
-for item in tourneys:
-    print(x)
-    print(item)
-    print(get_results(item))
-    x = x + 1
 
+x = 1
+
+#for item in tourneys:
+##    print(x)
+ #   print(item)
+#    print(get_results(item))
+ #   x = x + 1
+
+data = []
+for row in get_results('http://bvbinfo.com/Tournament.asp?ID=4440'):
+    data.append(row)
+    print(row)
+
+df = pd.DataFrame(data)
+print(df)
