@@ -35,23 +35,25 @@ def get_results(linky):
         tbl[['Finish']] = tbl[['Finish']].apply(pd.to_numeric)
     if 'Points' in tbl.columns:
         tbl[['Points']] = tbl[['Points']].apply(pd.to_numeric)
-    dft = tbl.dtypes
+    #tbl = tbl.values.tolist()
     return tbl
 
 tourneys = get_tourneys(2023)
 
 x = 1
+tourneyresults = []
+for item in tourneys:
+    if x < 999:
+        print(x)
+        listy = get_results(item).values.tolist()
+        tourneyresults = tourneyresults + listy
+        #print(get_results(item))
+    x = x + 1
 
-#for item in tourneys:
-##    print(x)
- #   print(item)
-#    print(get_results(item))
- #   x = x + 1
+res = pd.DataFrame(tourneyresults)
+print(res)
 
-data = []
-for row in get_results('http://bvbinfo.com/Tournament.asp?ID=4440'):
-    data.append(row)
-    print(row)
 
-df = pd.DataFrame(data)
-print(df)
+res.to_csv('2023_results.csv')
+
+#To-do: add gender differentiation and tourney name
