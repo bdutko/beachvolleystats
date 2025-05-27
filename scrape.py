@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-#pd.set_option('display.max_rows', None)
-#pd.set_option('display.max_columns', None)
 
 def get_tourneys(year):
     r = requests.get( f'http://bvbinfo.com/Season.asp?AssocID=3&Year={year}')
@@ -30,7 +28,6 @@ def get_results(linky):
     tbl.reset_index(drop=True, inplace=True)
     tbl.columns = tbl.iloc[0]
     tbl = tbl[1:]
-    tbl.reset_index(drop=True,  inplace=True)
     if 'Finish' in tbl.columns:
         tbl[['Finish']] = tbl[['Finish']].apply(pd.to_numeric)
     if 'Points' in tbl.columns:
@@ -40,20 +37,17 @@ def get_results(linky):
 
 tourneys = get_tourneys(2023)
 
-x = 1
-tourneyresults = []
-for item in tourneys:
-    if x < 999:
-        print(x)
+def get_yearresults(year):
+    x = 1
+    tourneyresults = []
+    for item in get_tourneys(year):
         listy = get_results(item).values.tolist()
         tourneyresults = tourneyresults + listy
-        #print(get_results(item))
-    x = x + 1
+        x = x + 1
+    res = pd.DataFrame(tourneyresults)
+    return res
+    
 
-res = pd.DataFrame(tourneyresults)
-print(res)
 
-
-res.to_csv('2023_results.csv')
 
 #To-do: add gender differentiation and tourney name
